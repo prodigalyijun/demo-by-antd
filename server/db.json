@@ -17,12 +17,6 @@
       "age": "333333",
       "gender": "male",
       "id": 10002
-    },
-    {
-      "name": "李四",
-      "age": 33,
-      "gender": "male",
-      "id": 10003
     }
   ],
   "book": [
