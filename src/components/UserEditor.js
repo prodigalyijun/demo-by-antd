@@ -1,8 +1,16 @@
 import React from 'react';
 import FormItem from '../components/FormItem';
 import formProvider from '../utils/formProvider';
+import request from '../utils/request';
 
 class UserEditor extends React.Component {
+    componentWillMount() {
+        const { editTarget, setFormValues } = this.props;
+        if (editTarget) {
+            setFormValues(editTarget);
+        }
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -21,18 +29,11 @@ class UserEditor extends React.Component {
             method = 'put';
         }
 
-        fetch(apiUrl, {
-            method,
-            body: JSON.stringify({
-                name: name.value,
-                age: age.value,
-                gender: gender.value
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        request(method, apiUrl, {
+            name: name.value,
+            age: age.value,
+            gender: gender.value
         })
-            .then((res) => res.json())
             .then((res) => {
                 if (res.id) {
                     alert(editType + '用户成功');
@@ -42,47 +43,37 @@ class UserEditor extends React.Component {
                     alert(editType + '失败');
                 }
             })
-            .catch((err) => console.log(err));
-    }
-
-    componentWillMount() {
-        const { editTarget, setFormValues } = this.props;
-        if (editTarget) {
-            setFormValues(editTarget);
-        }
+            .catch((err) => console.error(err));
     }
 
     render() {
         const { form: { name, age, gender }, onFormChange } = this.props;
         return (
             <form onSubmit={(e) => this.handleSubmit(e)}>
-                <label>用户名：</label>
-                <input
-                    type="text"
-                    value={name.value}
-                    onChange={(e) => onFormChange('name', e.target.value)}
-                />
-                {!name.valid && <span>{name.error}</span>}
-                <br />
-                <label>年龄：</label>
-                <input
-                    type="number"
-                    value={age.value || ''}
-                    onChange={(e) => onFormChange('age', +e.target.value)}
-                />
-                {!age.valid && <span>{age.error}</span>}
-                <br />
-                <label>性别：</label>
-                <select
-                    value={gender.value}
-                    onChange={(e) => onFormChange('gender', e.target.value)}
-                >
-                    <option value="">请选择</option>
-                    <option value="male">男</option>
-                    <option value="female">女</option>
-                </select>
-                {!gender.valid && <span>{gender.error}</span>}
-                <br />
+                <FormItem label="用户名：" valid={name.valid} error={name.error}>
+                    <input
+                        type="text"
+                        value={name.value}
+                        onChange={(e) => onFormChange('name', e.target.value)}
+                    />
+                </FormItem>
+                <FormItem label="年龄：" valid={age.valid} error={age.error}>
+                    <input
+                        type="number"
+                        value={age.value || ''}
+                        onChange={(e) => onFormChange('age', +e.target.value)}
+                    />
+                </FormItem>
+                <FormItem label="性别：" valid={gender.valid} error={gender.error}>
+                    <select
+                        value={gender.value}
+                        onChange={(e) => onFormChange('gender', e.target.value)}
+                    >
+                        <option value="">请选择</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </FormItem>
                 <br />
                 <input type="submit" value="提交" />
             </form>
@@ -92,7 +83,7 @@ class UserEditor extends React.Component {
 
 UserEditor.contextTypes = {
     router: React.PropTypes.object.isRequired
-}
+};
 
 UserEditor = formProvider({
     name: {

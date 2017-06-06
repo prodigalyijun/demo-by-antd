@@ -21,16 +21,34 @@
   ],
   "book": [
     {
-      "id": 10000,
       "name": "JavaScript从入门到精通",
-      "price": 9990,
-      "owner_id": 10000
+      "price": 99,
+      "owner_id": 10001,
+      "id": 10000
     },
     {
       "id": 10001,
       "name": "Java从入门到放弃",
       "price": 1990,
       "owner_id": 10001
+    },
+    {
+      "name": "编程之美",
+      "price": 33,
+      "owner_id": 10001,
+      "id": 10002
+    },
+    {
+      "name": "颈椎病康复指南",
+      "price": 88,
+      "owner_id": 10001,
+      "id": 10003
+    },
+    {
+      "name": "活着",
+      "price": 99,
+      "owner_id": 10001,
+      "id": 10004
     }
   ]
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeLayout from '../layouts/HomeLayout';
+import { get, del } from '../utils/request';
 
 class UserList extends React.Component {
     constructor(props) {
@@ -10,8 +11,7 @@ class UserList extends React.Component {
     }
 
     componentWillMount() {
-        fetch('http://localhost:3000/user')
-            .then(res => res.json())
+        get('http://localhost:3000/user')
             .then(res => {
                 this.setState({
                     userList: res
@@ -27,27 +27,23 @@ class UserList extends React.Component {
         const confirmed = confirm(`确定要删除用户 ${user.name} 吗？`);
 
         if (confirmed) {
-            fetch('http://localhost:3000/user/' + user.id, {
-                method: 'delete'
-            })
-                .then(res => res.json())
+            del('http://localhost:3000/user/' + user.id)
                 .then(res => {
                     this.setState({
-                        userList: this.state.userList.filter(item => item.id !== user.id)
+                        userList: this.state.bookList.filter(item => item.id !== user.id)
                     });
-                    //this.componentWillMount();
                     alert('删除用户成功');
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.error(err);
                     alert('删除用户失败');
                 });
         }
-
     }
 
     render() {
         const { userList } = this.state;
+
         return (
             <HomeLayout title="用户列表">
                 <table>
@@ -60,6 +56,7 @@ class UserList extends React.Component {
                             <th>操作</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {
                             userList.map((user) => {
@@ -69,9 +66,11 @@ class UserList extends React.Component {
                                         <td>{user.name}</td>
                                         <td>{user.gender}</td>
                                         <td>{user.age}</td>
-                                        <td>  <a href="javascript:void(0)" onClick={() => this.handleEdit(user)}>编辑</a>
+                                        <td>
+                                            <a href="javascript:void(0)" onClick={() => this.handleEdit(user)}>编辑</a>
                                             &nbsp;
-                    <a href="javascript:void(0)" onClick={() => this.handleDel(user)}>删除</a></td>
+                    <a href="javascript:void(0)" onClick={() => this.handleDel(user)}>删除</a>
+                                        </td>
                                     </tr>
                                 );
                             })
@@ -84,7 +83,7 @@ class UserList extends React.Component {
 }
 
 UserList.contextTypes = {
-  router: React.PropTypes.object.isRequired
+    router: React.PropTypes.object.isRequired
 };
 
 export default UserList;
