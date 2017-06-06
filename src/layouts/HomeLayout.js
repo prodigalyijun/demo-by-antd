@@ -1,6 +1,10 @@
 import React from 'react';
+import checkLog from '../utils/checkLog';
 
 class HomeLayout extends React.Component {
+    componentWillMount() {
+        checkLog();
+    }
     render() {
         const { title, children } = this.props;
         return (
