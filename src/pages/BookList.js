@@ -45,7 +45,6 @@ class BookList extends React.Component {
         const { bookList } = this.state;
 
         return (
-            <HomeLayout title="图书列表">
                 <table>
                     <thead>
                         <tr>
@@ -77,7 +76,6 @@ class BookList extends React.Component {
                         }
                     </tbody>
                 </table>
-            </HomeLayout>
         );
     }
 }
